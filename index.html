@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zalo OA Callback - Xác thực thành công</title>
+    
+    <meta name="zalo-platform-site-verification" content="DÁN_MÃ_XÁC_THỰC" />
+
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; max-width: 500px; width: 90%; }
+        h1 { color: #0068ff; margin-bottom: 10px; }
+        p { color: #555; }
+        .code-box { background: #eef2f7; padding: 15px; border: 1px dashed #0068ff; border-radius: 8px; margin: 20px 0; font-family: monospace; word-break: break-all; font-size: 1.1em; color: #333; }
+        .btn { background: #0068ff; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; text-decoration: none; font-weight: bold; }
+        .btn:hover { background: #0056d2; }
+        .copy-success { color: green; font-size: 0.9em; margin-top: 5px; display: none; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h1>Kết Nối Zalo OA</h1>
+    <p>Đăng nhập thành công! Hãy copy đoạn mã bên dưới và dán vào phần mềm của bạn.</p>
+    
+    <div class="code-box" id="authCode">Đang kiểm tra mã code...</div>
+    
+    <button class="btn" onclick="copyCode()">Copy Mã Code</button>
+    <div id="copyMsg" class="copy-success">Đã copy vào bộ nhớ tạm!</div>
+</div>
+
+<script>
+
+    function getCodeFromUrl() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+        const codeBox = document.getElementById('authCode');
+        
+        if (code) {
+            codeBox.innerText = code;
+        } else {
+            codeBox.innerText = "Không tìm thấy mã code trong URL. Vui lòng thử lại.";
+            codeBox.style.color = "red";
+        }
+    }
+
+    function copyCode() {
+        const codeText = document.getElementById('authCode').innerText;
+        if (codeText && !codeText.includes("Không tìm thấy")) {
+            navigator.clipboard.writeText(codeText);
+            document.getElementById('copyMsg').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('copyMsg').style.display = 'none';
+            }, 2000);
+        }
+    }
+
+    window.onload = getCodeFromUrl;
+</script>
+
+</body>
+</html>
